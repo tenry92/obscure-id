@@ -16,7 +16,7 @@ string can be mapped to exactly one number.
 const publicId = require('public-id');
 
 publicId(19).then(generatedId => {
-  console.log('public id:', generatedId');
+  console.log('public id:', generatedId);
   
   publicId('ivUVjy0Q').then(id => {
     console.log('id:', id);
@@ -32,7 +32,7 @@ const {PublicIdGenerator} = require('public-id');
 const generator = new PublicIdGenerator();
 
 generator.generate(19).then(generatedId => {
-  console.log('public id:', generatedId');
+  console.log('public id:', generatedId);
   
   generator.decode('ivUVjy0Q').then(id => {
     console.log('id:', id);
@@ -43,15 +43,15 @@ generator.generate(19).then(generatedId => {
 
 ## Platform Support
 
-| Platform | Support |
-| -------- | ------- |
-| Node.js | 7.10.1+, 8.x and up |
-| Chrome | 55+ |
-| Edge | Yes |
-| Firefox | 52+ |
-| IE | No |
-| Opera | 42+ |
-| Safari | 10.1+ |
+Platform | Support
+-------- | -------
+Node.js | 7.10.1+, 8.x and up
+Chrome | 55+
+Edge | Yes
+Firefox | 52+
+IE | No
+Opera | 42+
+Safari | 10.1+
 
 
 ## Installation and Usage
@@ -270,13 +270,13 @@ length) and the number of characters available there's a limit for the maximum
 numerical ID that can be encoded. The following tables shows some sample
 configurations and the maximum IDs:
 
-| Signature | Length | Raw Length | Index | Min ID | Max ID | Fits in |
-| --------- | ------ | ---------- | ----- | ------ | ------ |
-| 2 | 8 | 6 | 62 (A-Z, a-z, 0-9) | 1 | 56800235584 | 5 bytes |
-| 2 | 8 | 6 | 26 (a-z) | 1 | 308915776 | 4 bytes |
-| 1 | 8 | 7 | 62 (A-Z, a-z, 0-9) | 1 | 3521614606208 | 6 bytes |
-| 4 | 12 | 8 | 62 (A-Z, a-z, 0-9) | 1 | 218340105584896 | 6 bytes |
-| 2 | 12 | 10 | 62 (A-Z, a-z, 0-9) | 1 | 839299365868340200 | 8 bytes |
+Signature | Length | Raw Length | Index | Min ID | Max ID | Fits in
+--------- | ------ | ---------- | ----- | ------ | ------
+2 | 8 | 6 | 62 (A-Z, a-z, 0-9) | 1 | 56800235584 | 5 bytes
+2 | 8 | 6 | 26 (a-z) | 1 | 308915776 | 4 bytes
+1 | 8 | 7 | 62 (A-Z, a-z, 0-9) | 1 | 3521614606208 | 6 bytes
+4 | 12 | 8 | 62 (A-Z, a-z, 0-9) | 1 | 218340105584896 | 6 bytes
+2 | 12 | 10 | 62 (A-Z, a-z, 0-9) | 1 | 839299365868340200 | 8 bytes
 
 You can use the `maxId()` method to get the maximum ID possible using the
 current configuration.
