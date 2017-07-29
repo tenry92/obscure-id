@@ -1,6 +1,6 @@
 {
   "name": "public-id",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Numeric ID obscuration.",
   "keywords": [
     "public-id", "id", "obscuration"
