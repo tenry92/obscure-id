@@ -271,7 +271,7 @@ numerical ID that can be encoded. The following tables shows some sample
 configurations and the maximum IDs:
 
 Signature | Length | Raw Length | Index | Min ID | Max ID | Fits in
---------- | ------ | ---------- | ----- | ------ | ------
+--------- | ------ | ---------- | ----- | ------ | ------ | --------
 2 | 8 | 6 | 62 (A-Z, a-z, 0-9) | 1 | 56800235584 | 5 bytes
 2 | 8 | 6 | 26 (a-z) | 1 | 308915776 | 4 bytes
 1 | 8 | 7 | 62 (A-Z, a-z, 0-9) | 1 | 3521614606208 | 6 bytes
