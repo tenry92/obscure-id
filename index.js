@@ -218,6 +218,12 @@
         throw new TypeError('"id" is not a string');
       }
       
+      for(const char of id) {
+        if(this.index.indexOf(char) == -1) {
+          throw new TypeError('"id" is invalid');
+        }
+      }
+      
       const rawLength = id.length - this.signatureLength;
       const base = this.index.length;
       

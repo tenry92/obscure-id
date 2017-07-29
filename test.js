@@ -61,6 +61,17 @@ describe('publicId', function() {
     });
   });
   
+  describe('[call](\'this is invalid\')', function() {
+    it('should throw a TypeError', async function() {
+      try {
+        await publicId('this is invalid');
+        assert.fail();
+      } catch(error) {
+        assert.ok(error instanceof TypeError);
+      }
+    });
+  });
+  
   describe('#configure()', function() {
     describe('defaultIdLength = 11', function() {
       before(function() {
