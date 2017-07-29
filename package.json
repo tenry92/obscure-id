@@ -1,0 +1,25 @@
+{
+  "name": "public-id",
+  "version": "1.0.0",
+  "description": "Numeric ID obscuration.",
+  "keywords": [
+    "public-id", "id", "obscuration"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Simon \"Tenry\" Burchert",
+  "license": "MIT",
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "mocha": "^3.4.2"
+  },
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "package-lock.json",
+    "README.md",
+    "test.js"
+  ]
+}
