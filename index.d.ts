@@ -3,7 +3,7 @@ declare module 'obsure-id' {
     key?: string;
     index?: string;
     defaultIdLength?: number;
-    signatureLength?: number;
+    prefixLength?: number;
     randomFunction?: () => Promise<number>;
   }
 

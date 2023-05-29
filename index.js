@@ -39,8 +39,8 @@
   }
 
   function assertConfiguration(generator) {
-    if (generator.signatureLength < 0) {
-      throw new RangeError('invalid signatureLength');
+    if (generator.prefixLength < 0) {
+      throw new RangeError('invalid prefixLength');
     }
 
     if (generator.index.length < 1) {
@@ -56,7 +56,7 @@
    * @property {string} key
    * @property {string} index
    * @property {number} defaultIdLength
-   * @property {number} signatureLength
+   * @property {number} prefixLength
    * @property {function} randomFunction
    */
   class ObscuredIdGenerator {
@@ -80,7 +80,7 @@
       this.key = 'PleaseFillMe';
       this.index = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       this.defaultIdLength = 8;
-      this.signatureLength = 2;
+      this.prefixLength = 2;
       this.randomFunction = defaultRandomFunction;
 
       return this;
@@ -103,13 +103,13 @@
         }
       }
 
-      if (length - this.signatureLength <= 0) {
+      if (length - this.prefixLength <= 0) {
         throw new RangeError('invalid length');
       }
 
-      const rawLength = length - this.signatureLength;
+      const payloadLength = length - this.prefixLength;
 
-      return this.index.length ** rawLength;
+      return this.index.length ** payloadLength;
     }
 
     /**
@@ -157,14 +157,14 @@
         }
       }
 
-      if (length - this.signatureLength <= 0) {
+      if (length - this.prefixLength <= 0) {
         throw new RangeError('invalid length');
       }
 
       const base = this.index.length;
 
       // payload length, excluding the random generated prefix
-      const payloadLength = length - this.signatureLength;
+      const payloadLength = length - this.prefixLength;
 
       // calculate two random numbers
       const [r1, r2] = await generateRandomNumbers(base, random || this.randomFunction);
@@ -180,7 +180,7 @@
 
       // prepend random key to the key
       key = this.index[r1] + this.index[r2] + key;
-      keyLength += this.signatureLength; // also count random digits
+      keyLength += this.prefixLength; // also count random digits
 
       // output, shift state
       let orderedPayload = '';
@@ -238,7 +238,7 @@
         output = output.substring(0, outputPosition) + payloadDigit + output.substring(outputPosition + 1);
       }
 
-      // write random digits (signature)
+      // write random digits (prefix)
       output = this.index[r1] + this.index[r2] + output;
 
       return output;
@@ -272,7 +272,7 @@
         }
       }
 
-      const payloadLength = id.length - this.signatureLength;
+      const payloadLength = id.length - this.prefixLength;
       const base = this.index.length;
 
       let key = this.key;
@@ -294,9 +294,9 @@
       key = key.substring(r % keyLength) + key.substring(0, (r % keyLength));
 
       key = r1 + r2 + key;
-      keyLength += this.signatureLength;
+      keyLength += this.prefixLength;
 
-      let unorderedPayload = id.substring(this.signatureLength);
+      let unorderedPayload = id.substring(this.prefixLength);
 
       let payloadIndex, i, c, ord;
 

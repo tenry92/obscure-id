@@ -217,7 +217,7 @@ you change your index or change the order of the characters, all your generated
 obscured IDs become invalid.
 - **defaultIdLength:** (number, default 8) the output length of generated obscured
 IDs, if no other length is specified by parameter.
-- **signatureLength:** (number, default 2) number of characters within the
+- **prefixLength:** (number, default 2) number of characters within the
 generated obscured ID, which indicates the random value of the output. If set to
 0, every numerical ID corresponds to exactly one possible obscured ID. If you
 change this value, all your generated obscured IDs become invalid.
@@ -265,13 +265,13 @@ obscureId.configure({
 
 ## Max ID
 
-Depending on the raw output length (i.e. the total length minus the signature
+Depending on the raw output length (i.e. the total length minus the prefix
 length) and the number of characters available there's a limit for the maximum
 numerical ID that can be encoded. The following tables shows some sample
 configurations and the maximum IDs:
 
-Signature | Length | Raw Length | Index | Min ID | Max ID | Fits in
---------- | ------ | ---------- | ----- | ------ | ------ | --------
+Prefix | Length | Raw Length | Index | Min ID | Max ID | Fits in
+------ | ------ | ---------- | ----- | ------ | ------ | --------
 2 | 8 | 6 | 62 (A-Z, a-z, 0-9) | 1 | 56800235584 | 5 bytes
 2 | 8 | 6 | 26 (a-z) | 1 | 308915776 | 4 bytes
 1 | 8 | 7 | 62 (A-Z, a-z, 0-9) | 1 | 3521614606208 | 6 bytes
