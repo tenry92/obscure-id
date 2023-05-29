@@ -3,7 +3,9 @@
   "version": "2.0.0",
   "description": "Numeric ID obscuration.",
   "keywords": [
-    "obscure-id", "id", "obscuration"
+    "obscure-id",
+    "id",
+    "obscuration"
   ],
   "main": "index.js",
   "scripts": {
@@ -12,8 +14,8 @@
   "author": "Simon \"Tenry\" Burchert",
   "license": "MIT",
   "devDependencies": {
-    "assert": "^1.4.1",
-    "mocha": "^3.4.2"
+    "assert": "^2.0.0",
+    "mocha": "^10.2.0"
   },
   "files": [
     "index.d.ts",
