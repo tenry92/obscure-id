@@ -7,7 +7,7 @@
   }
 
   /**
-   * Generate two random numbers.
+   * Generate two random integer numbers between 0 and base (exclusive).
    *
    * @param {number} base
    * @param {function|[Promise<number>, Promise<number>]} [random] Random numbers to use.
@@ -87,9 +87,9 @@
     }
 
     /**
-     * Determine the maximum possible ID
+     * Determine the maximum possible ID.
      *
-     * @param {number} [length] Overwrite ID lenght to use.
+     * @param {number} [length] Overwrite ID length to use.
      * @returns number
      */
     maxId(length) {
@@ -163,14 +163,14 @@
 
       const base = this.index.length;
 
-      // output length (without rand-signature)
-      const rawLength = length - this.signatureLength;
+      // payload length, excluding the random generated prefix
+      const payloadLength = length - this.signatureLength;
 
       // calculate two random numbers
       const [r1, r2] = await generateRandomNumbers(base, random || this.randomFunction);
 
       // calculate single resulting number
-      let r = r1 + r2 * base; // random number
+      let r = r1 + r2 * base;
 
       let key = this.key;
       let keyLength = key.length;
@@ -183,67 +183,65 @@
       keyLength += this.signatureLength; // also count random digits
 
       // output, shift state
-      let out = '';
+      let orderedPayload = '';
       let shift = 0;
-      let n, k, ord;
+      let digitIndex, ord;
 
       // while digits are still to be written
-      for (n = 0; n < rawLength; ++n) {
-        // calculate resulting 'key' (digit index)
-        k = (id + shift) % base;
+      for (let payloadIndex = 0; payloadIndex < payloadLength; ++payloadIndex) {
+        digitIndex = (id + shift) % base;
 
         // output resulting digit
-        out += this.index[k];
+        orderedPayload += this.index[digitIndex];
 
         // remove written digits from input
         id = Math.floor(id / base);
 
         // get current char from key and its order
-        ord = key.charCodeAt(n % keyLength);
+        ord = key.charCodeAt(payloadIndex % keyLength);
 
         // calculate new shift value
-        shift = (shift + k + ord) % base;
+        shift = (shift + digitIndex + ord) % base;
       }
 
       // randomize order
-      let tmp = out;
-      let c, i, p, j;
-      out = '\0'.repeat(rawLength);
+      let payloadDigit, outputPosition, i;
+      let output = '\0'.repeat(payloadLength);
 
-      // for each char in tmp
-      for (n = 0; n < rawLength; ++n) {
-        c = tmp[n];
-        i = r % (rawLength - n);
-        r = Math.floor(r / (rawLength - n));
+      // for each char in payload
+      for (let payloadIndex = 0; payloadIndex < payloadLength; ++payloadIndex) {
+        payloadDigit = orderedPayload[payloadIndex];
+        i = r % (payloadLength - payloadIndex);
+        r = Math.floor(r / (payloadLength - payloadIndex));
 
         // string position
-        p = 0;
+        outputPosition = 0;
 
         // skip set digits
-        while(out[p] && out[p] != '\0') {
-          ++p;
+        while (output[outputPosition] && output[outputPosition] != '\0') {
+          ++outputPosition;
         }
 
-        for (j = 0; j < i; ++j) {
-          ++p;
+        for (let j = 0; j < i; ++j) {
+          ++outputPosition;
 
           // skip set digits
-          while(out[p] && out[p] != '\0') {
-            ++p;
+          while (output[outputPosition] && output[outputPosition] != '\0') {
+            ++outputPosition;
           }
         }
 
-        if (p >= rawLength) {
+        if (outputPosition >= payloadLength) {
           return false;
         }
 
-        out = out.substring(0, p) + c + out.substring(p + 1);
+        output = output.substring(0, outputPosition) + payloadDigit + output.substring(outputPosition + 1);
       }
 
       // write random digits (signature)
-      out = this.index[r1] + this.index[r2] + out;
+      output = this.index[r1] + this.index[r2] + output;
 
-      return out;
+      return output;
     }
 
     /**
@@ -274,7 +272,7 @@
         }
       }
 
-      const rawLength = id.length - this.signatureLength;
+      const payloadLength = id.length - this.signatureLength;
       const base = this.index.length;
 
       let key = this.key;
@@ -298,26 +296,24 @@
       key = r1 + r2 + key;
       keyLength += this.signatureLength;
 
-      id = id.substr(this.signatureLength);
+      let unorderedPayload = id.substr(this.signatureLength);
 
-      let n, i, c, ord;
+      let payloadIndex, i, c, ord;
 
       // for each digit
-      for (n = 0; n < rawLength; ++n) {
-        i = r % (rawLength - n);
-        c = id[i];
-        r = Math.floor(r / (rawLength - n));
+      for (let payloadIndex = 0; payloadIndex < payloadLength; ++payloadIndex) {
+        i = r % (payloadLength - payloadIndex);
+        c = unorderedPayload[i];
+        r = Math.floor(r / (payloadLength - payloadIndex));
 
         tmp += c;
 
         // remove digit
-        id = id.substr(0, i) + id.substr(i + 1);
+        unorderedPayload = unorderedPayload.substr(0, i) + unorderedPayload.substr(i + 1);
       }
 
-      id = tmp;
-
-      for (n = 0; n < rawLength; ++n) {
-        r = id[n];
+      for (let n = 0; n < payloadLength; ++n) {
+        r = tmp[n];
         i = this.index.indexOf(r);
         if (i == -1) {
           return false;
@@ -333,10 +329,6 @@
         c = key[n % keyLength];
         ord = c.charCodeAt(0);
         shift = (shift + (i + shift) % base + ord) % base;
-
-        // while(shift < 0) {
-        //   shift += base;
-        // }
       }
 
       return out;
