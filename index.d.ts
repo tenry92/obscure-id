@@ -6,15 +6,15 @@ declare module 'obsure-id' {
     signatureLength?: number;
     randomFunction?: () => Promise<number>;
   }
-  
+
   function obscureId(id: number, length?: number, random?: number[] | (() => Promise<number>)): Promise<string>;
   function obscureId(id: string): Promise<number>;
-  
+
   namespace obscureId {
     export function configure(options: ObscureIdOptions);
     export function resetConfiguration();
     export function maxId(length?: number): number;
-    
+
     export class ObscuredIdOptions {
       constructor(options?: ObscureIdOptions);
       configure(options: ObscureIdOptions): this;
@@ -27,6 +27,6 @@ declare module 'obsure-id' {
       decode(id: string): Promise<number>;
     }
   }
-  
+
   export = obscureId;
 }

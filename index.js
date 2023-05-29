@@ -16,20 +16,20 @@
   async function generateRandomNumbers(base, random) {
     const promises = [];
 
-    if(typeof random == 'undefined') {
+    if (typeof random == 'undefined') {
       promises.push(defaultRandomFunction());
       promises.push(defaultRandomFunction());
-    } else if(typeof random == 'function') {
+    } else if (typeof random == 'function') {
       promises.push(random());
       promises.push(random());
-    } else if(Array.isArray(random)) {
-      if(random.length >= 2) {
+    } else if (Array.isArray(random)) {
+      if (random.length >= 2) {
         promises.push(Promise.resolve(random[0]));
         promises.push(Promise.resolve(random[1]));
       }
     }
 
-    if(promises.length != 2) {
+    if (promises.length != 2) {
       throw new TypeError('"random" is not valid');
     }
 
@@ -39,15 +39,15 @@
   }
 
   function assertConfiguration(generator) {
-    if(generator.signatureLength < 0) {
+    if (generator.signatureLength < 0) {
       throw new RangeError('invalid signatureLength');
     }
 
-    if(generator.index.length < 1) {
+    if (generator.index.length < 1) {
       throw new RangeError('invalid index');
     }
 
-    if(generator.key.length < 1) {
+    if (generator.key.length < 1) {
       throw new RangeError('invalid key');
     }
   }
@@ -63,13 +63,13 @@
     constructor(options) {
       this.resetConfiguration();
 
-      if(typeof options == 'object' && options != null) {
+      if (typeof options == 'object' && options != null) {
         this.configure(options);
       }
     }
 
     configure(options) {
-      for(const key in options) {
+      for (const key in options) {
         this[key] = options[key];
       }
 
@@ -95,15 +95,15 @@
     maxId(length) {
       assertConfiguration(this);
 
-      if(typeof length != 'number') {
-        if(typeof length == 'undefined') {
+      if (typeof length != 'number') {
+        if (typeof length == 'undefined') {
           length = this.defaultIdLength;
         } else {
           throw new TypeError('"length" is not a number');
         }
       }
 
-      if(length - this.signatureLength <= 0) {
+      if (length - this.signatureLength <= 0) {
         throw new RangeError('invalid length');
       }
 
@@ -121,9 +121,9 @@
      * @returns {number|string} Obscured ID (string) or decoded numeric ID (number).
      */
     obscureId(id, length, random) {
-      if(typeof id == 'number') {
+      if (typeof id == 'number') {
         return this.generate(id, length, random);
-      } else if(typeof id == 'string') {
+      } else if (typeof id == 'string') {
         return this.decode(id);
       }
 
@@ -141,23 +141,23 @@
     async generate(id, length, random) {
       assertConfiguration(this);
 
-      if(typeof id != 'number') {
+      if (typeof id != 'number') {
         throw new TypeError('"id" is not a number');
       }
 
-      if(id < 1 || id > this.maxId(length)) {
+      if (id < 1 || id > this.maxId(length)) {
         throw new RangeError('invalid id');
       }
 
-      if(typeof length != 'number') {
-        if(typeof length == 'undefined') {
+      if (typeof length != 'number') {
+        if (typeof length == 'undefined') {
           length = this.defaultIdLength;
         } else {
           throw new TypeError('"length" is not a number');
         }
       }
 
-      if(length - this.signatureLength <= 0) {
+      if (length - this.signatureLength <= 0) {
         throw new RangeError('invalid length');
       }
 
@@ -188,7 +188,7 @@
       let n, k, ord;
 
       // while digits are still to be written
-      for(n = 0; n < rawLength; ++n) {
+      for (n = 0; n < rawLength; ++n) {
         // calculate resulting 'key' (digit index)
         k = (id + shift) % base;
 
@@ -211,7 +211,7 @@
       out = '\0'.repeat(rawLength);
 
       // for each char in tmp
-      for(n = 0; n < rawLength; ++n) {
+      for (n = 0; n < rawLength; ++n) {
         c = tmp[n];
         i = r % (rawLength - n);
         r = Math.floor(r / (rawLength - n));
@@ -224,7 +224,7 @@
           ++p;
         }
 
-        for(j = 0; j < i; ++j) {
+        for (j = 0; j < i; ++j) {
           ++p;
 
           // skip set digits
@@ -233,7 +233,7 @@
           }
         }
 
-        if(p >= rawLength) {
+        if (p >= rawLength) {
           return false;
         }
 
@@ -264,12 +264,12 @@
     async decode(id) {
       assertConfiguration(this);
 
-      if(typeof id != 'string') {
+      if (typeof id != 'string') {
         throw new TypeError('"id" is not a string');
       }
 
-      for(const char of id) {
-        if(this.index.indexOf(char) == -1) {
+      for (const char of id) {
+        if (this.index.indexOf(char) == -1) {
           throw new TypeError('"id" is invalid');
         }
       }
@@ -303,7 +303,7 @@
       let n, i, c, ord;
 
       // for each digit
-      for(n = 0; n < rawLength; ++n) {
+      for (n = 0; n < rawLength; ++n) {
         i = r % (rawLength - n);
         c = id[i];
         r = Math.floor(r / (rawLength - n));
@@ -316,15 +316,15 @@
 
       id = tmp;
 
-      for(n = 0; n < rawLength; ++n) {
+      for (n = 0; n < rawLength; ++n) {
         r = id[n];
         i = this.index.indexOf(r);
-        if(i == -1) {
+        if (i == -1) {
           return false;
         }
 
         i -= shift;
-        if(i < 0) {
+        if (i < 0) {
           i += base;
         }
 
@@ -356,12 +356,12 @@
 
   let defined = false;
 
-  if(typeof module == 'object' && typeof module.exports == 'object') {
+  if (typeof module == 'object' && typeof module.exports == 'object') {
     module.exports = obscureId;
     defined = true;
   }
 
-  if(typeof define == 'function' && define.amd) {
+  if (typeof define == 'function' && define.amd) {
     define('obscure-id', [], function() {
       return obscureId;
     });
@@ -369,12 +369,12 @@
     defined = true;
   }
 
-  if(!defined) {
-    if(typeof 'window' == 'object') {
+  if (!defined) {
+    if (typeof 'window' == 'object') {
       window.obscureId = obscureId;
-    } else if(typeof 'global' == 'object') {
+    } else if (typeof 'global' == 'object') {
       global.obscureId = obscureId;
-    } else if(typeof this == 'object') {
+    } else if (typeof this == 'object') {
       this.obscureId = obscureId;
     }
   }
