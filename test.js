@@ -1,20 +1,20 @@
 const assert = require('assert');
 
-const publicId = require('.');
-const {PublicIdGenerator} = publicId;
+const obscureId = require('.');
+const {ObscuredIdGenerator} = obscureId;
 
-describe('publicId', function() {
+describe('obscureId', function() {
   describe('[call]()', function() {
     it('should throw a TypeError', function() {
       assert.throws(() => {
-        publicId();
+        obscureId();
       }, TypeError);
     });
   });
   
   describe('[call](19)', function() {
     it('should return a string', async function() {
-      const result = await publicId(19);
+      const result = await obscureId(19);
       assert.equal(typeof result, 'string');
       assert.equal(result.length, 8);
     });
@@ -22,7 +22,7 @@ describe('publicId', function() {
   
   describe('[call](19, 8, [0.3, 0.5])', function() {
     it('should return a specific string', async function() {
-      const result = await publicId(19, 8, [0.3, 0.5]);
+      const result = await obscureId(19, 8, [0.3, 0.5]);
       // assert.equal(typeof result, 'string');
       assert.strictEqual(result, 'ivUVjy0Q');
     });
@@ -30,7 +30,7 @@ describe('publicId', function() {
   
   describe('[call](\'ivUVjy0Q\')', function() {
     it('should return 19', async function() {
-      const result = await publicId('ivUVjy0Q');
+      const result = await obscureId('ivUVjy0Q');
       // assert.equal(typeof result, 'number');
       assert.strictEqual(result, 19);
     });
@@ -38,13 +38,13 @@ describe('publicId', function() {
   
   describe('#maxId()', function() {
     it('should return 56800235584', function() {
-      assert.equal(publicId.maxId(), 56800235584);
+      assert.equal(obscureId.maxId(), 56800235584);
     });
   });
   
   describe('[call](56800235584)', function() {
     it('should return a string', async function() {
-      const result = await publicId(56800235584);
+      const result = await obscureId(56800235584);
       assert.equal(typeof result, 'string');
       assert.equal(result.length, 8);
     });
@@ -53,7 +53,7 @@ describe('publicId', function() {
   describe('[call](56800235585)', function() {
     it('should throw a RangeError', async function() {
       try {
-        await publicId(56800235585);
+        await obscureId(56800235585);
         assert.fail();
       } catch(error) {
         assert.ok(error instanceof RangeError);
@@ -64,7 +64,7 @@ describe('publicId', function() {
   describe('[call](\'this is invalid\')', function() {
     it('should throw a TypeError', async function() {
       try {
-        await publicId('this is invalid');
+        await obscureId('this is invalid');
         assert.fail();
       } catch(error) {
         assert.ok(error instanceof TypeError);
@@ -75,16 +75,16 @@ describe('publicId', function() {
   describe('#configure()', function() {
     describe('defaultIdLength = 11', function() {
       before(function() {
-        publicId.configure({defaultIdLength: 11});
+        obscureId.configure({defaultIdLength: 11});
       });
       after(function() {
-        publicId.resetConfiguration();
+        obscureId.resetConfiguration();
       });
       
       it('should return a string of length 11', async function() {
-        publicId.configure({defaultIdLength: 11});
+        obscureId.configure({defaultIdLength: 11});
         
-        const result = await publicId(19);
+        const result = await obscureId(19);
         assert.equal(typeof result, 'string');
         assert.equal(result.length, 11);
       });
@@ -97,14 +97,14 @@ describe('publicId', function() {
           return randomValues.shift();
         };
         
-        publicId.configure({randomFunction});
+        obscureId.configure({randomFunction});
       });
       after(function() {
-        publicId.resetConfiguration();
+        obscureId.resetConfiguration();
       });
       
       it('should return a specific string', async function() {
-        const result = await publicId(19);
+        const result = await obscureId(19);
         // assert.equal(typeof result, 'string');
         assert.strictEqual(result, 'ivUVjy0Q');
       });
@@ -112,11 +112,11 @@ describe('publicId', function() {
   });
 });
 
-describe('PublicIdGenerator', function() {
+describe('ObscuredIdGenerator', function() {
   let generator;
   
   before(function() {
-    generator = new PublicIdGenerator({defaultIdLength: 12});
+    generator = new ObscuredIdGenerator({defaultIdLength: 12});
   });
   
   describe('#generate(19)', function() {

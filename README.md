@@ -1,8 +1,8 @@
-# public-id
+# obscure-id
 
 This project provides a small utility for numerical ID obscuration for public
 display or referencing. It converts a number like *19* to a string like
-*ivUVjy0Q*, and a given string ("public ID") can be converted back to the
+*ivUVjy0Q*, and a given string ("obscure ID") can be converted back to the
 original number.
 
 One special feature of this function is, that a number can be converted to
@@ -13,12 +13,12 @@ string can be mapped to exactly one number.
 ## Example
 
 ~~~js
-const publicId = require('public-id');
+const obscureId = require('obscure-id');
 
-publicId(19).then(generatedId => {
-  console.log('public id:', generatedId);
+obscureId(19).then(generatedId => {
+  console.log('obscured id:', generatedId);
   
-  publicId('ivUVjy0Q').then(id => {
+  obscureId('ivUVjy0Q').then(id => {
     console.log('id:', id);
   });
 });
@@ -27,12 +27,12 @@ publicId(19).then(generatedId => {
 Using a generator instance:
 
 ~~~js
-const {PublicIdGenerator} = require('public-id');
+const {ObscuredIdGenerator} = require('obscure-id');
 
-const generator = new PublicIdGenerator();
+const generator = new ObscuredIdGenerator();
 
 generator.generate(19).then(generatedId => {
-  console.log('public id:', generatedId);
+  console.log('obscured id:', generatedId);
   
   generator.decode('ivUVjy0Q').then(id => {
     console.log('id:', id);
@@ -61,19 +61,19 @@ Safari | 10.1+
 Use `npm` to install the package:
 
 ```sh
-$ npm install --save public-id
+$ npm install --save obscure-id
 ```
 
 Now *require* that package in your code:
 
 ```js
-const publicId = require('public-id');
-const {PublicIdGenerator} = require('public-id');
+const obscureId = require('obscure-id');
+const {ObscuredIdGenerator} = require('obscure-id');
 
 async main() {
-  console.log(await publicId(12));
+  console.log(await obscureId(12));
   
-  const generator = new PublicIdGenerator();
+  const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
 }
 
@@ -83,17 +83,17 @@ main();
 
 ### Browser
 
-Just download the `index.js`, rename it to `public-id.js` or whatever you like
+Just download the `index.js`, rename it to `obscure-id.js` or whatever you like
 and include it in your HTML file:
 
 ```html
-<script src="public-id.js"></script>
+<script src="obscure-id.js"></script>
 <script>
 async main() {
-  console.log(await publicId(12));
+  console.log(await obscureId(12));
   
-  const {PublicIdGenerator} = publicId;
-  const generator = new PublicIdGenerator();
+  const {ObscuredIdGenerator} = obscureId;
+  const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
 }
 </script>
@@ -101,15 +101,15 @@ async main() {
 
 #### AMD
 
-If you're using AMD, `publicId` is not exported globally. You can access it like
+If you're using AMD, `obscureId` is not exported globally. You can access it like
 this:
 
 ```js
-define(['public-id'], async (publicId) => {
-  console.log(await publicId(12));
+define(['obscure-id'], async (obscureId) => {
+  console.log(await obscureId(12));
   
-  const {PublicIdGenerator} = publicId;
-  const generator = new PublicIdGenerator();
+  const {ObscuredIdGenerator} = obscureId;
+  const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
 });
 ```
@@ -117,7 +117,7 @@ define(['public-id'], async (publicId) => {
 
 ## API
 
-### publicId(id: number, length?: number, random?: number[] | Function)
+### obscureId(id: number, length?: number, random?: number[] | Function)
 
 - **id:** the numerical ID to be encoded; must be >= 1
 - **length:** desired length of output string
@@ -125,23 +125,23 @@ define(['public-id'], async (publicId) => {
 or a function that returns a Promise that is resolved to such a number
 - **returns:** `Promise<string>`
 
-Generate an obscured public id from a number.
+Generate an obscured id from a number.
 
 
-### publicId(publicId: string)
+### obscureId(obscureId: string)
 
 - **returns:** `Promise<number>`
 
-Convert a public ID back to number.
+Convert an obscured ID back to number.
 
 
-### publicId.configure(options: Object)
+### obscureId.configure(options: Object)
 
 Change the configuration. Only changes options, that are specified in the
 parameter object.
 
 ```js
-publicId.configure({
+obscureId.configure({
   key: 'awesome',
   index: 'abcdefghijklmnopqrstuvwxyz',
   defaultIdLength: 10
@@ -151,22 +151,22 @@ publicId.configure({
 See Options below for more details.
 
 
-### publicId.resetConfiguration()
+### obscureId.resetConfiguration()
 
 Reset options to the initial values.
 
 
-### PublicIdGenerator.constructor(options?: Object)
+### ObscuredIdGenerator.constructor(options?: Object)
 
-Constructor for a new *PublicIdGenerator*. See Options below for possible
+Constructor for a new *ObscuredIdGenerator*. See Options below for possible
 options.
 
 ```js
-const generator = new PublicIdGenerator(options);
+const generator = new ObscuredIdGenerator(options);
 ```
 
 
-### PublicIdGenerator#publicId(id: number, length?: number, random?: number[] | Function)
+### ObscuredIdGenerator#obscureId(id: number, length?: number, random?: number[] | Function)
 
 - **id:** the numerical ID to be encoded; must be >= 1
 - **length:** desired length of output string
@@ -174,21 +174,21 @@ const generator = new PublicIdGenerator(options);
 or a function that returns a Promise that is resolved to such a number
 - **returns:** `Promise<string>`
 
-Generate an obscured public id from a number.
+Generate an obscured id from a number.
 
 - **alias:** `generate()`, `encode()`
 
 
-### PublicIdGenerator#publicId(publicId: string)
+### ObscuredIdGenerator#obscureId(obscureId: string)
 
 - **returns:** `Promise<number>`
 
-Convert a public ID back to number.
+Convert an obscured ID back to number.
 
 - **alias:** `decode()`
 
 
-### PublicIdGenerator#configure(options: Object)
+### ObscuredIdGenerator#configure(options: Object)
 
 Change some configurations.
 
@@ -203,7 +203,7 @@ generator.configure({
 See Options below for more details.
 
 
-### PublicIdGenerator#resetConfiguration()
+### ObscuredIdGenerator#resetConfiguration()
 
 Reset options to the initial values.
 
@@ -211,16 +211,16 @@ Reset options to the initial values.
 ### Options
 
 - **key:** (string) the key, that is used to encode and decode the IDs. If you
-change your key, all your generated public IDs become invalid.
-- **index:** (string) possible characters, that are used in the public IDs. If
+change your key, all your generated obscured IDs become invalid.
+- **index:** (string) possible characters, that are used in the obscured IDs. If
 you change your index or change the order of the characters, all your generated
-public IDs become invalid.
-- **defaultIdLength:** (number, default 8) the output length of generated public
+obscured IDs become invalid.
+- **defaultIdLength:** (number, default 8) the output length of generated obscured
 IDs, if no other length is specified by parameter.
 - **signatureLength:** (number, default 2) number of characters within the
-generated public ID, which indicates the random value of the output. If set to
-0, every numerical ID corresponds to exactly one possible public ID. If you
-change this value, all your generated public IDs become invalid.
+generated obscured ID, which indicates the random value of the output. If set to
+0, every numerical ID corresponds to exactly one possible obscured ID. If you
+change this value, all your generated obscured IDs become invalid.
 - **randomFunction:** (function) a custom random number generator. Must return
 a Promise, which resolves to a number between 0 (inclusive) and 1 (exclusive).
 
@@ -233,7 +233,7 @@ security, you can use a more secure random function like
 
 ```js
 // in the browser
-publicId.configure({
+obscureId.configure({
   async randomFunction() {
     const array = new Uint32Array(1);
     window.crypto.getRandomValues(array);
@@ -247,7 +247,7 @@ publicId.configure({
 // in Node.js
 const crypto = require('crypto');
 
-publicId.configure({
+obscureId.configure({
   randomFunction() {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(1, (error, buffer) => {
@@ -284,4 +284,4 @@ current configuration.
 
 ## License
 
-public-id is licensed under the MIT License.
+obscure-id is licensed under the MIT License.

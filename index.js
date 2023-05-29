@@ -42,7 +42,7 @@
     }
   }
 
-  class PublicIdGenerator {
+  class ObscuredIdGenerator {
     constructor(options) {
       this.resetConfiguration();
       
@@ -89,7 +89,7 @@
       return this.index.length ** rawLength;
     }
     
-    publicId(id, length, random) {
+    obscureId(id, length, random) {
       if(typeof id == 'number') {
         return this.generate(id, length, random);
       } else if(typeof id == 'string') {
@@ -293,27 +293,27 @@
     }
   }
   
-  const generator = new PublicIdGenerator();
+  const generator = new ObscuredIdGenerator();
   
-  function publicId(id, length, random) {
-    return generator.publicId(id, length, random);
+  function obscureId(id, length, random) {
+    return generator.obscureId(id, length, random);
   }
   
-  publicId.configure = (...args) => { generator.configure(...args); return publicId; };
-  publicId.resetConfiguration = () => { generator.resetConfiguration(); return publicId; };
-  publicId.maxId = (...args) => generator.maxId(...args);
-  publicId.PublicIdGenerator = PublicIdGenerator;
+  obscureId.configure = (...args) => { generator.configure(...args); return obscureId; };
+  obscureId.resetConfiguration = () => { generator.resetConfiguration(); return obscureId; };
+  obscureId.maxId = (...args) => generator.maxId(...args);
+  obscureId.ObscuredIdGenerator = ObscuredIdGenerator;
   
   let defined = false;
   
   if(typeof module == 'object' && typeof module.exports == 'object') {
-    module.exports = publicId;
+    module.exports = obscureId;
     defined = true;
   }
   
   if(typeof define == 'function' && define.amd) {
-    define('public-id', [], function() {
-      return publicId;
+    define('obscure-id', [], function() {
+      return obscureId;
     });
     
     defined = true;
@@ -321,11 +321,11 @@
   
   if(!defined) {
     if(typeof 'window' == 'object') {
-      window.publicId = publicId;
+      window.obscureId = obscureId;
     } else if(typeof 'global' == 'object') {
-      global.publicId = publicId;
+      global.obscureId = obscureId;
     } else if(typeof this == 'object') {
-      this.publicId = publicId;
+      this.obscureId = obscureId;
     }
   }
 })();
