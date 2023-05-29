@@ -2,8 +2,9 @@
 
 This project provides a small utility for numerical ID obscuration for public
 display or referencing. It converts a number like *19* to a string like
-*ivUVjy0Q*, and a given string ("obscure ID") can be converted back to the
-original number.
+*ivUVjy0Q*, and a given string (obscured ID) can be converted back to the
+original number. The numerical number must be an integer of 1 or greater.
+The maximum possible ID depends on the configuration.
 
 One special feature of this function is, that a number can be converted to
 several, various string values depending on random values, but each possible
@@ -15,12 +16,14 @@ string can be mapped to exactly one number.
 ~~~js
 const obscureId = require('obscure-id');
 
-obscureId(19).then(generatedId => {
-  console.log('obscured id:', generatedId);
-  
-  obscureId('ivUVjy0Q').then(id => {
-    console.log('id:', id);
-  });
+// obscure numeric id
+obscureId(19).then(obscuredId => {
+  console.log('obscured id:', obscuredId);
+});
+
+// decode obscured id
+obscureId('ivUVjy0Q').then(id => {
+  console.log('id:', id);
 });
 ~~~
 
@@ -31,12 +34,14 @@ const { ObscuredIdGenerator } = require('obscure-id');
 
 const generator = new ObscuredIdGenerator();
 
-generator.generate(19).then(generatedId => {
-  console.log('obscured id:', generatedId);
-  
-  generator.decode('ivUVjy0Q').then(id => {
-    console.log('id:', id);
-  });
+// obscure numeric id
+generator.generate(19).then(obscuredId => {
+  console.log('obscured id:', obscuredId);
+});
+
+// decode obscured id
+generator.decode('ivUVjy0Q').then(id => {
+  console.log('id:', id);
 });
 ~~~
 
@@ -58,10 +63,16 @@ Safari | 10.1+
 
 ### Node.js
 
-Use `npm` to install the package:
+Using `npm`:
 
 ```sh
 $ npm install --save obscure-id
+```
+
+Using `yarn`:
+
+```sh
+$ yarn add obscure-id
 ```
 
 Now *require* that package in your code:
@@ -71,8 +82,10 @@ const obscureId = require('obscure-id');
 const { ObscuredIdGenerator } = require('obscure-id');
 
 async main() {
+  // using the plain function
   console.log(await obscureId(12));
   
+  // using the generator class
   const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
 }
@@ -90,8 +103,10 @@ and include it in your HTML file:
 <script src="obscure-id.js"></script>
 <script>
 async main() {
+  // using the plain function
   console.log(await obscureId(12));
   
+  // using the generator class
   const { ObscuredIdGenerator } = obscureId;
   const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
@@ -106,8 +121,10 @@ this:
 
 ```js
 define(['obscure-id'], async (obscureId) => {
+  // using the plain function
   console.log(await obscureId(12));
   
+  // using the generator class
   const { ObscuredIdGenerator } = obscureId;
   const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
@@ -117,7 +134,7 @@ define(['obscure-id'], async (obscureId) => {
 
 ## API
 
-### obscureId(id: number, length?: number, random?: number[] | Function)
+### `obscureId(id: number, length?: number, random?: number[] | Function)`
 
 - **id:** the numerical ID to be encoded; must be >= 1
 - **length:** desired length of output string
@@ -128,14 +145,14 @@ or a function that returns a Promise that is resolved to such a number
 Generate an obscured id from a number.
 
 
-### obscureId(obscureId: string)
+### `obscureId(obscureId: string)`
 
 - **returns:** `Promise<number>`
 
 Convert an obscured ID back to number.
 
 
-### obscureId.configure(options: Object)
+### `obscureId.configure(options: Object)`
 
 Change the configuration. Only changes options, that are specified in the
 parameter object.
@@ -151,12 +168,12 @@ obscureId.configure({
 See Options below for more details.
 
 
-### obscureId.resetConfiguration()
+### `obscureId.resetConfiguration()`
 
 Reset options to the initial values.
 
 
-### ObscuredIdGenerator.constructor(options?: Object)
+### `ObscuredIdGenerator.constructor(options?: Object)`
 
 Constructor for a new *ObscuredIdGenerator*. See Options below for possible
 options.
@@ -166,7 +183,7 @@ const generator = new ObscuredIdGenerator(options);
 ```
 
 
-### ObscuredIdGenerator#obscureId(id: number, length?: number, random?: number[] | Function)
+### `ObscuredIdGenerator#obscureId(id: number, length?: number, random?: number[] | Function)`
 
 - **id:** the numerical ID to be encoded; must be >= 1
 - **length:** desired length of output string
@@ -179,7 +196,7 @@ Generate an obscured id from a number.
 - **alias:** `generate()`, `encode()`
 
 
-### ObscuredIdGenerator#obscureId(obscureId: string)
+### `ObscuredIdGenerator#obscureId(obscureId: string)`
 
 - **returns:** `Promise<number>`
 
@@ -188,7 +205,7 @@ Convert an obscured ID back to number.
 - **alias:** `decode()`
 
 
-### ObscuredIdGenerator#configure(options: Object)
+### `ObscuredIdGenerator#configure(options: Object)`
 
 Change some configurations.
 
@@ -203,7 +220,7 @@ generator.configure({
 See Options below for more details.
 
 
-### ObscuredIdGenerator#resetConfiguration()
+### `ObscuredIdGenerator#resetConfiguration()`
 
 Reset options to the initial values.
 
