@@ -43,8 +43,8 @@
       throw new RangeError('invalid prefixLength');
     }
 
-    if (generator.index.length < 1) {
-      throw new RangeError('invalid index');
+    if (generator.charset.length < 1) {
+      throw new RangeError('invalid charset');
     }
 
     if (generator.key.length < 1) {
@@ -54,7 +54,7 @@
 
   /**
    * @property {string} key
-   * @property {string} index
+   * @property {string} charset
    * @property {number} defaultIdLength
    * @property {number} prefixLength
    * @property {function} randomFunction
@@ -78,7 +78,7 @@
 
     resetConfiguration() {
       this.key = 'PleaseFillMe';
-      this.index = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      this.charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       this.defaultIdLength = 8;
       this.prefixLength = 2;
       this.randomFunction = defaultRandomFunction;
@@ -109,7 +109,7 @@
 
       const payloadLength = length - this.prefixLength;
 
-      return this.index.length ** payloadLength;
+      return this.charset.length ** payloadLength;
     }
 
     /**
@@ -161,7 +161,7 @@
         throw new RangeError('invalid length');
       }
 
-      const base = this.index.length;
+      const base = this.charset.length;
 
       // payload length, excluding the random generated prefix
       const payloadLength = length - this.prefixLength;
@@ -179,7 +179,7 @@
       key = key.substring(r % keyLength) + key.substring(0, (r % keyLength));
 
       // prepend random key to the key
-      key = this.index[r1] + this.index[r2] + key;
+      key = this.charset[r1] + this.charset[r2] + key;
       keyLength += this.prefixLength; // also count random digits
 
       // output, shift state
@@ -192,7 +192,7 @@
         digitIndex = (id + shift) % base;
 
         // output resulting digit
-        orderedPayload += this.index[digitIndex];
+        orderedPayload += this.charset[digitIndex];
 
         // remove written digits from input
         id = Math.floor(id / base);
@@ -239,7 +239,7 @@
       }
 
       // write random digits (prefix)
-      output = this.index[r1] + this.index[r2] + output;
+      output = this.charset[r1] + this.charset[r2] + output;
 
       return output;
     }
@@ -267,13 +267,13 @@
       }
 
       for (const char of id) {
-        if (this.index.indexOf(char) == -1) {
+        if (this.charset.indexOf(char) == -1) {
           throw new TypeError('"id" is invalid');
         }
       }
 
       const payloadLength = id.length - this.prefixLength;
-      const base = this.index.length;
+      const base = this.charset.length;
 
       let key = this.key;
 
@@ -286,7 +286,7 @@
       const r1 = id[0];
       const r2 = id[1];
 
-      let r = this.index.indexOf(r2) * base + this.index.indexOf(r1);
+      let r = this.charset.indexOf(r2) * base + this.charset.indexOf(r1);
 
       let keyLength = key.length;
 
@@ -314,7 +314,7 @@
 
       for (let n = 0; n < payloadLength; ++n) {
         r = tmp[n];
-        i = this.index.indexOf(r);
+        i = this.charset.indexOf(r);
         if (i == -1) {
           return false;
         }

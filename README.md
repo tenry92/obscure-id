@@ -143,7 +143,7 @@ parameter object.
 ```js
 obscureId.configure({
   key: 'awesome',
-  index: 'abcdefghijklmnopqrstuvwxyz',
+  charset: 'abcdefghijklmnopqrstuvwxyz',
   defaultIdLength: 10
 });
 ```
@@ -195,7 +195,7 @@ Change some configurations.
 ```js
 generator.configure({
   key: 'awesome',
-  index: 'abcdefghijklmnopqrstuvwxyz',
+  charset: 'abcdefghijklmnopqrstuvwxyz',
   defaultIdLength: 10
 });
 ```
@@ -212,8 +212,8 @@ Reset options to the initial values.
 
 - **key:** (string) the key, that is used to encode and decode the IDs. If you
 change your key, all your generated obscured IDs become invalid.
-- **index:** (string) possible characters, that are used in the obscured IDs. If
-you change your index or change the order of the characters, all your generated
+- **charset:** (string) possible characters, that are used in the obscured IDs. If
+you change your charset or change the order of the characters, all your generated
 obscured IDs become invalid.
 - **defaultIdLength:** (number, default 8) the output length of generated obscured
 IDs, if no other length is specified by parameter.
@@ -270,8 +270,8 @@ length) and the number of characters available there's a limit for the maximum
 numerical ID that can be encoded. The following tables shows some sample
 configurations and the maximum IDs:
 
-Prefix | Length | Raw Length | Index | Min ID | Max ID | Fits in
------- | ------ | ---------- | ----- | ------ | ------ | --------
+Prefix | Length | Raw Length | Charset | Min ID | Max ID | Fits in
+------ | ------ | ---------- | ------- | ------ | ------ | --------
 2 | 8 | 6 | 62 (A-Z, a-z, 0-9) | 1 | 56800235584 | 5 bytes
 2 | 8 | 6 | 26 (a-z) | 1 | 308915776 | 4 bytes
 1 | 8 | 7 | 62 (A-Z, a-z, 0-9) | 1 | 3521614606208 | 6 bytes
