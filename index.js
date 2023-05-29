@@ -176,7 +176,7 @@
       let keyLength = key.length;
 
       // shift start of key according to random number r
-      key = key.substr(r % keyLength) + key.substr(0, (r % keyLength));
+      key = key.substring(r % keyLength) + key.substring(0, (r % keyLength));
 
       // prepend random key to the key
       key = this.index[r1] + this.index[r2] + key;
@@ -291,12 +291,12 @@
       let keyLength = key.length;
 
       // shift start of key according to random number r
-      key = key.substr(r % keyLength) + key.substr(0, (r % keyLength));
+      key = key.substring(r % keyLength) + key.substring(0, (r % keyLength));
 
       key = r1 + r2 + key;
       keyLength += this.signatureLength;
 
-      let unorderedPayload = id.substr(this.signatureLength);
+      let unorderedPayload = id.substring(this.signatureLength);
 
       let payloadIndex, i, c, ord;
 
@@ -309,7 +309,7 @@
         tmp += c;
 
         // remove digit
-        unorderedPayload = unorderedPayload.substr(0, i) + unorderedPayload.substr(i + 1);
+        unorderedPayload = unorderedPayload.substring(0, i) + unorderedPayload.substring(i + 1);
       }
 
       for (let n = 0; n < payloadLength; ++n) {
