@@ -27,7 +27,7 @@ obscureId(19).then(generatedId => {
 Using a generator instance:
 
 ~~~js
-const {ObscuredIdGenerator} = require('obscure-id');
+const { ObscuredIdGenerator } = require('obscure-id');
 
 const generator = new ObscuredIdGenerator();
 
@@ -68,7 +68,7 @@ Now *require* that package in your code:
 
 ```js
 const obscureId = require('obscure-id');
-const {ObscuredIdGenerator} = require('obscure-id');
+const { ObscuredIdGenerator } = require('obscure-id');
 
 async main() {
   console.log(await obscureId(12));
@@ -92,7 +92,7 @@ and include it in your HTML file:
 async main() {
   console.log(await obscureId(12));
   
-  const {ObscuredIdGenerator} = obscureId;
+  const { ObscuredIdGenerator } = obscureId;
   const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
 }
@@ -108,7 +108,7 @@ this:
 define(['obscure-id'], async (obscureId) => {
   console.log(await obscureId(12));
   
-  const {ObscuredIdGenerator} = obscureId;
+  const { ObscuredIdGenerator } = obscureId;
   const generator = new ObscuredIdGenerator();
   console.log(await generator.generate(12));
 });
