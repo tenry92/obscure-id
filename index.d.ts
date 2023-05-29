@@ -15,7 +15,7 @@ declare module 'obsure-id' {
     export function resetConfiguration();
     export function maxId(length?: number): number;
 
-    export class ObscuredIdOptions {
+    export class ObscuredIdGenerator {
       constructor(options?: ObscureIdOptions);
       configure(options: ObscureIdOptions): this;
       resetConfiguration(): this;
